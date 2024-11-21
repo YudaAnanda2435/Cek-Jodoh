@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cek Jodoh</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Concert+One&family=Darker+Grotesque:wght@300..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Protest+Revolution&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@10" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        background-color: #f075aa;
+        font-family: "Concert One", sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        min-height: 100vh;
+        margin: 0;
+        box-sizing: border-box;
+        text-align: center;
+      }
+
+      .card {
+        background-color: rgb(255, 255, 255);
+        padding: 20px;
+        border: 1px solid #000000;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 400px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+        position: relative;
+      }
+
+      h1,
+      p {
+        color: #000000;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+      }
+
+      input[type="text"] {
+        padding-block: 12px;
+        padding-inline: auto;
+        font-size: 14px;
+        border: 2px solid #000000;
+        border-radius: 10px;
+        text-align: center;
+        width: 50%;
+        margin-bottom: 20px;
+        background-color: transparent;
+        color: #000000;
+      }
+
+      select {
+        padding-block: 10px;
+        padding-inline: auto;
+        font-size: 16px;
+        border: 2px solid #000000;
+        border-radius: 10px;
+        text-align: center;
+        width: 51%;
+        margin-bottom: 20px;
+        background-color: transparent;
+        color: #000000;
+      }
+
+      button {
+        background-color: #478ccf;
+        color: #ffffff;
+        padding-inline: 6px;
+        padding-block: 4px;
+        font-size: 16px;
+        display: flex;
+        width: 30%;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      }
+
+      button:hover {
+        background-color: #36c2ce;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      .footer {
+        color: #97d3ff;
+        font-weight: bold;
+        position: absolute;
+        bottom: 10px;
+        width: 100%;
+        text-align: center;
+      }
+
+      #result {
+        display: none;
+      }
+
+      .loading-spinner {
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top: 4px solid #088395;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -20px;
+        margin-left: -20px;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="card">
+      <h1>Cek Jodoh</h1>
+      <p>Masukkan nama</p>
+      <input type="text" id="nameInput" placeholder="Tulis Nama" />
+      <select id="genderInput">
+        <option value="male">Laki-laki</option>
+        <option value="female">Perempuan</option>
+      </select>
+      <button onclick="cekJodoh()">Cek Jodoh</button>
+      <div id="loading" class="loading-spinner" style="display: none"></div>
+      <button
+        onclick="resetForm()"
+        style="
+          padding-inline: 40px;
+          margin-top: 10px;
+          background-color: #ae445a;
+        "
+      >
+        Reset
+      </button>
+      <div id="result">
+        <h2 id="jodohName"></h2>
+      </div>
+    </div>
+    <script>
+      function cekJodoh() {
+        const nameInput = document.getElementById("nameInput").value;
+        const genderInput = document.getElementById("genderInput").value;
+        if (!nameInput) {
+          Swal.fire({
+            title: "GAK BOLEH KOSONG!😡",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+        document.getElementById("loading").style.display = "block";
+        setTimeout(() => {
+          const malePartners = [
+            { name: "Budi" },
+            { name: "Yunus" },
+            { name: "Adit" },
+            { name: "Rizky" },
+            { name: "Udin" },
+            { name: "Soleh" },
+            { name: "Dika" },
+            { name: "Rifal" },
+            { name: "Agung" },
+            { name: "Faris" },
+            { name: "Galih" },
+            { name: "Kamal" },
+            { name: "Yudi" },
+            { name: "Ahmad" },
+            { name: "Fino" },
+            { name: "Rega" },
+            { name: "Diki" },
+            { name: "Riki" },
+            { name: "Aji" },
+            { name: "Sarif" },
+            { name: "Joko" },
+            { name: "Rapi" },
+            { name: "Sani" },
+            { name: "Doni" },
+            { name: "Agung" },
+            { name: "Jefri" },
+            { name: "Yudi" },
+            { name: "Riki" },
+            { name: "Arbani" },
+            { name: "Rega" },
+            { name: "Raja" },
+            { name: "Rifki" },
+            { name: "Gunawan" },
+            { name: "Asep" },
+            { name: "Rian" },
+            { name: "Teguh" },
+            { name: "Agus" },
+            { name: "Andi" },
+            { name: "Slamet" },
+            { name: "Wawan" },
+            { name: "Fajar" },
+            { name: "Hendra" },
+            { name: "Yusuf" },
+            { name: "Indra" },
+            { name: "Arif" },
+            { name: "Eko" },
+            { name: "Bayu" },
+            { name: "Yogi" },
+            { name: "Tatang" },
+            { name: "Odih" },
+            { name: "Deri" },
+            { name: "Opang" },
+            { name: "Rizki" },
+            { name: "Rudi" },
+            { name: "Iwan" },
+            { name: "Adi" },
+            { name: "Taufik" },
+            { name: "Satria" },
+            { name: "Irwan" },
+            { name: "Wahyu" },
+            { name: "Bambang" },
+            { name: "Gunawan" },
+            { name: "Ahmad" },
+            { name: "Haris" },
+            { name: "Cahyo" },
+            { name: "Asril" },
+            { name: "Rahmat" },
+            { name: "Dedi" },
+            { name: "Feri" },
+            { name: "Gilang" },
+            { name: "Guntur" },
+            { name: "Hamid" },
+            { name: "Imam" },
+            { name: "Jaka" },
+            { name: "Kurniawan" },
+            { name: "Lukman" },
+            { name: "Aditama" },
+            { name: "Nasir" },
+            { name: "Renaldi" },
+            { name: "Pandu" },
+            { name: "Qomar" },
+            { name: "Rangga" },
+            { name: "Setyo" },
+            { name: "Tomi" },
+            { name: "Usman" },
+            { name: "Vian" },
+            { name: "Wisnu" },
+            { name: "Muiz" },
+            { name: "Soni" },
+            { name: "Ronal" },
+            { name: "Iqbal" },
+            { name: "Yusuf" },
+            { name: "Rafael" },
+            { name: "Biyan" },
+            { name: "Heru" },
+            { name: "Hikam" },
+            { name: "Galang" },
+            { name: "Adit" },
+            { name: "Mirza" },
+            { name: "Abay" },
+            { name: "Sani" },
+            { name: "Beni" },
+            { name: "Yoga" },
+            { name: "Zaki" },
+            { name: "Anwar" },
+            { name: "Bahrul" },
+            { name: "Candra" },
+            { name: "Danu" },
+            { name: "Edy" },
+            { name: "Fahmi" },
+            { name: "Genta" },
+            { name: "Hafiz" },
+            { name: "Ivan" },
+            { name: "Johan" },
+            { name: "Krisna" },
+            { name: "Lutfi" },
+            { name: "Azhar" },
+            { name: "Nico" },
+            { name: "Okta" },
+            { name: "Putra" },
+            { name: "Rendi" },
+            { name: "Aldi" },
+            { name: "Toni" },
+            { name: "Umar" },
+            { name: "Vito" },
+            { name: "Wira" },
+            { name: "Andri" },
+            { name: "Zainal" },
+            { name: "Zaky" },
+            { name: "Arkan" },
+            { name: "Dodo" },
+            { name: "Roni" },
+            { name: "Bisma" },
+            { name: "Hendra" },
+            { name: "Ari" },
+            { name: "Doni" },
+            { name: "Setiawan" },
+            { name: "Sandi" },
+            { name: "Rodi" },
+            { name: "Raka" },
+            { name: "Dono" },
+            { name: "Uman" },
+            { name: "Ginan" },
+            { name: "Arsan" },
+            { name: "Dani" },
+            { name: "Arman" },
+            { name: "Bagus" },
+            { name: "Chandra" },
+            { name: "Dimas" },
+            { name: "Egi" },
+            { name: "Ferry" },
+            { name: "Gani" },
+            { name: "Hafiz" },
+            { name: "Irfan" },
+            { name: "Jaka" },
+            { name: "Kamal" },
+            { name: "Gunawan" },
+            { name: "Hamdi" },
+            { name: "Mansur" },
+            { name: "Nugroho" },
+            { name: "Oki" },
+            { name: "Panca" },
+            { name: "Rizal" },
+            { name: "Sandi" },
+            { name: "Tommy" },
+            { name: "Udin" },
+            { name: "Atsal" },
+            { name: "Rojak" },
+            { name: "Dani" },
+            { name: "Ifal" },
+            { name: "Alex" },
+            { name: "Rangga" },
+            { name: "Ridwan" },
+            { name: "Fiki" },
+            { name: "Azril" },
+            { name: "Ridho" },
+            { name: "Verico" },
+            { name: "Asep" },
+            { name: "Herlan" },
+            { name: "David" },
+            { name: "Risman" },
+            { name: "Agis" },
+            { name: "Rafa" },
+          ];
+
+          const femalePartners = [
+            { name: "Siti" },
+            { name: "Ayu" },
+            { name: "Via" },
+            { name: "Dina" },
+            { name: "Resti" },
+            { name: "Ica" },
+            { name: "Resti" },
+            { name: "Rini" },
+            { name: "Arin" },
+            { name: "Lala" },
+            { name: "Mona" },
+            { name: "Maimunah" },
+            { name: "Jesika" },
+            { name: "Nisa" },
+            { name: "Sindi" },
+            { name: "Serly" },
+            { name: "Selma" },
+            { name: "Cindy" },
+            { name: "Rere" },
+            { name: "Ara" },
+            { name: "Alisa" },
+            { name: "Yuni" },
+            { name: "Julia" },
+            { name: "Dewi" },
+            { name: "Ayu" },
+            { name: "Silva" },
+            { name: "Via" },
+            { name: "Marlina" },
+            { name: "Siti" },
+            { name: "Rina" },
+            { name: "Maya" },
+            { name: "Lilis" },
+            { name: "Lia" },
+            { name: "Intan" },
+            { name: "Ratna" },
+            { name: "Lina" },
+            { name: "Fitri" },
+            { name: "Yuni" },
+            { name: "Putri" },
+            { name: "Freya" },
+            { name: "Desi" },
+            { name: "Nia" },
+            { name: "Rita" },
+            { name: "Tina" },
+            { name: "Indah" },
+            { name: "Wulan" },
+            { name: "Rosa" },
+            { name: "Sri" },
+            { name: "Mila" },
+            { name: "Dina" },
+            { name: "Farah" },
+            { name: "Aulia" },
+            { name: "Vina" },
+            { name: "Anisa" },
+            { name: "Sari" },
+            { name: "Elisa" },
+            { name: "Ika" },
+            { name: "Mega" },
+            { name: "Lilis" },
+            { name: "Rani" },
+            { name: "Yuli" },
+            { name: "Iin" },
+            { name: "Novi" },
+            { name: "sisil" },
+            { name: "Bella" },
+            { name: "Diah" },
+            { name: "Gita" },
+            { name: "Ines" },
+            { name: "Juwita" },
+            { name: "Kiki" },
+            { name: "Lestari" },
+            { name: "Marni" },
+            { name: "Niken" },
+            { name: "Ocha" },
+            { name: "Poppy" },
+            { name: "Qory" },
+            { name: "Riska" },
+            { name: "Silvi" },
+            { name: "Tri" },
+            { name: "Uli" },
+            { name: "Vira" },
+            { name: "Winda" },
+            { name: "Yana" },
+            { name: "Zahra" },
+            { name: "Amelia" },
+            { name: "Bella" },
+            { name: "Cici" },
+            { name: "Dita" },
+            { name: "Elina" },
+            { name: "Fani" },
+            { name: "Gina" },
+            { name: "Hana" },
+            { name: "Inayah" },
+            { name: "Juli" },
+            { name: "Kirana" },
+            { name: "Lisa" },
+            { name: "Maya" },
+            { name: "Nadya" },
+            { name: "Olin" },
+            { name: "Pratiwi" },
+            { name: "Qiana" },
+            { name: "Rossa" },
+            { name: "Selvi" },
+            { name: "Tari" },
+            { name: "Umi" },
+            { name: "Vivi" },
+            { name: "Cika" },
+            { name: "Rena" },
+            { name: "Yasmin" },
+            { name: "Zara" },
+            { name: "Aina" },
+            { name: "Bintang" },
+            { name: "Citra" },
+            { name: "Dina" },
+            { name: "Eka" },
+            { name: "Fitri" },
+            { name: "Gadis" },
+            { name: "Hesti" },
+            { name: "Intan" },
+            { name: "Jihan" },
+            { name: "Karina" },
+            { name: "Lina" },
+            { name: "Melati" },
+          ];
+
+          let partner;
+          if (genderInput === "male") {
+            partner =
+              femalePartners[Math.floor(Math.random() * femalePartners.length)];
+          } else {
+            partner =
+              malePartners[Math.floor(Math.random() * malePartners.length)];
+          }
+
+          document.getElementById(
+            "jodohName"
+          ).innerText = `Nama Jodoh : ${partner.name}`;
+          document.getElementById("result").style.display = "block";
+          document.getElementById("loading").style.display = "none";
+        }, 2000);
+      }
+
+      function resetForm() {
+        document.getElementById("nameInput").value = "";
+        document.getElementById("genderInput").selectedIndex = 0;
+        document.getElementById("result").style.display = "none";
+      }
+    </script>
+  </body>
+</html>
